@@ -4,7 +4,7 @@
  * Plugin URI:        https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-cloudflare-workers
  * Description:       Writes the generated site into a Cloudflare Workers KV namespace.
  * Update URI:        https://github.com/lignazio/vibestatic-addons
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires PHP:      8.2
  * Requires at least: 6.5
  * Author:            Ignazio Lucenti

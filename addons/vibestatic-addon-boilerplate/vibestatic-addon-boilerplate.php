@@ -4,7 +4,7 @@
  * Plugin URI:        https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-boilerplate
  * Description:       Reference add-on for VibeStatic. Reports what a deploy would send, without sending it.
  * Update URI:        https://github.com/lignazio/vibestatic-addons
- * Version:           1.0.0
+ * Version:           1.1.0
  * Requires PHP:      8.2
  * Requires at least: 6.5
  * Author:            Ignazio Lucenti
