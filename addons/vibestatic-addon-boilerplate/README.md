@@ -49,6 +49,12 @@ one does not have:
   here. It then logged the decrypted secret.
 - Header version `1.0-alpha-001`, constant `1.0-alpha-006`.
 
+## Nothing to verify
+
+This add-on sends nothing anywhere: that is what it is for. There is no service
+to test it against, which is also why it is the one to copy — you can watch what
+a deploy *would* do before writing the part that does it.
+
 ## Requirements
 
 VibeStatic 9.0 or later, PHP 8.2, WordPress 6.5.

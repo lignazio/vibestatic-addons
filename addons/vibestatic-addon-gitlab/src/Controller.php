@@ -35,6 +35,17 @@ class Controller extends \WP2Static\Addon\Controller {
         return 'https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-gitlab';
     }
 
+    /**
+     * Not yet, and the settings page says so.
+     *
+     * The requests below are written to the documented API and the logic is
+     * covered by the tests, but no deploy has been watched against a real
+     * account. This line becomes `true` when one has.
+     */
+    public function fieldTested() : bool {
+        return false;
+    }
+
     public function options() : Options {
         if ( null === $this->options ) {
             $this->options = new Options(

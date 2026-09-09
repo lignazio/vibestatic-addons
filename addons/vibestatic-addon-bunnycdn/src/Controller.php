@@ -36,6 +36,17 @@ class Controller extends \WP2Static\Addon\Controller {
     }
 
     /**
+     * Not yet, and the settings page says so.
+     *
+     * The requests below are written to the documented API and the logic is
+     * covered by the tests, but no deploy has been watched against a real
+     * account. This line becomes `true` when one has.
+     */
+    public function fieldTested() : bool {
+        return false;
+    }
+
+    /**
      * The options, and what changed about them.
      *
      * **The storage password is asked for directly.** Upstream took only the

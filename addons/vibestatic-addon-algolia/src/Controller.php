@@ -70,6 +70,17 @@ class Controller extends \WP2Static\Addon\Controller {
         return 'https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-algolia';
     }
 
+    /**
+     * Not yet, and the settings page says so.
+     *
+     * The form rewriting and the search page are covered by the tests, but
+     * nobody has watched a search on a published static copy actually reach
+     * Algolia and come back. This line becomes `true` when somebody has.
+     */
+    public function fieldTested() : bool {
+        return false;
+    }
+
     public function options() : Options {
         if ( null === $this->options ) {
             $this->options = new Options(

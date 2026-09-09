@@ -57,6 +57,21 @@ class Controller extends \WP2Static\Addon\Controller {
         return 'https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-advanced-crawling';
     }
 
+    /**
+     * Yes, and this one needed no account to prove.
+     *
+     * A page carrying five references was exported against a WordPress with
+     * two extra hosts configured, and the published HTML checked: the `https`
+     * reference rewritten — which is the one upstream's never touched, because
+     * it built the pattern as `'https:// ' . $host`, with a space in it — the
+     * `http` one rewritten, the scheme-relative `//host/path` rewritten, the
+     * host that was not on the list left alone, and no occurrence of either
+     * configured host left anywhere in the output.
+     */
+    public function fieldTested() : bool {
+        return true;
+    }
+
     public function options() : Options {
         if ( null === $this->options ) {
             $this->options = new Options(

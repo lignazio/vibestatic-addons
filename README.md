@@ -21,8 +21,30 @@ through `plugins_loaded`.
 | `algolia` | Makes WP Search with Algolia work on the static copy |
 | `advanced-crawling` | Rewrites hosts other than the WordPress site to the deployment URL |
 
-Each has a README saying what it does, what it replaces, and — importantly —
-what has **not** been verified against the real service.
+Each has a README saying what it does and what it replaces.
+
+## What has actually been tried
+
+The honest table, and the reason it is this high up the page. Every one of these
+is covered by tests and analysed at PHPStan's strictest setting; that is not the
+same thing as having watched it deploy.
+
+| | Tried against the real thing |
+|---|---|
+| `advanced-crawling` | **Yes.** A published export with two extra hosts configured, output checked reference by reference. |
+| `boilerplate` | Nothing to try: it sends nothing anywhere. |
+| `bunnycdn` `gcs` `azure` `github` `gitlab` `bitbucket` `cloudflare-workers` `algolia` | **No.** The requests are written to each service's documented API and the logic is covered by tests, but no deploy has been watched end to end. |
+
+An add-on in the last row says so on its own settings page, above the fields —
+the person about to paste production credentials into a form is the person who
+should be told. When one is verified, `fieldTested()` in its Controller becomes
+`true`, the notice goes, and `verify.php` insists the README agrees.
+
+If you try one against a throwaway account, what is worth watching is the three
+things their ancestors got wrong: that a second deploy with nothing changed
+uploads **nothing**, that a page deleted in WordPress **disappears** from the
+published site, and that a failed request appears in the log **as a failure**
+rather than being recorded as sent.
 
 ## Why one repository
 

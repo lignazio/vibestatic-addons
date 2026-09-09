@@ -338,6 +338,34 @@ foreach ( $addons as $key => $ns ) {
             throw new RuntimeException( 'saveOptionsFromUI does not authorise before writing' );
         }
 
+        /*
+         * What the add-on claims about itself, and what its README says, have
+         * to be the same claim.
+         *
+         * `fieldTested()` decides whether the settings page carries "this has
+         * not been tested against the real service". The README says the same
+         * thing in prose. Those are two places, so they will drift — and the
+         * direction they drift is the bad one: somebody verifies an add-on,
+         * flips the constant, and the README goes on warning; or updates the
+         * README and the notice stays. Either way the page and the page about
+         * the page disagree about whether to trust it.
+         */
+        $readme = "$dir/README.md";
+        $prose = is_readable( $readme ) ? (string) file_get_contents( $readme ) : '';
+        $warns = false !== strpos( $prose, '## Not verified' );
+
+        if ( $addon->fieldTested() && $warns ) {
+            throw new RuntimeException(
+                'fieldTested() is true but the README still has "## Not verified"'
+            );
+        }
+
+        if ( ! $addon->fieldTested() && ! $warns ) {
+            throw new RuntimeException(
+                'fieldTested() is false but the README does not say so under "## Not verified"'
+            );
+        }
+
         // Round-trip the options through $_POST, including a secret left blank.
         $_POST = [];
         foreach ( $names as $n ) {

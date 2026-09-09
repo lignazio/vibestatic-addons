@@ -664,12 +664,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/lignazio/vibestatic.git",
-                "reference": "f34467ebbdea5ccc352e89f56b30ddf27034065c"
+                "reference": "7a5e1d72bb9f37128b06abae5272b181ee979ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lignazio/vibestatic/zipball/f34467ebbdea5ccc352e89f56b30ddf27034065c",
-                "reference": "f34467ebbdea5ccc352e89f56b30ddf27034065c",
+                "url": "https://api.github.com/repos/lignazio/vibestatic/zipball/7a5e1d72bb9f37128b06abae5272b181ee979ccc",
+                "reference": "7a5e1d72bb9f37128b06abae5272b181ee979ccc",
                 "shasum": ""
             },
             "require": {
@@ -776,6 +776,9 @@
                 ],
                 "build": [
                     "tools/build_release.sh"
+                ],
+                "check-links": [
+                    "@php tools/check_links.php"
                 ]
             },
             "license": [
@@ -799,7 +802,7 @@
                 "issues": "https://github.com/lignazio/vibestatic/issues",
                 "source": "https://github.com/lignazio/vibestatic"
             },
-            "time": "2026-09-09T07:27:58+00:00"
+            "time": "2026-09-09T11:32:02+00:00"
         },
         {
             "name": "mockery/mockery",

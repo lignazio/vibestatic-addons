@@ -45,6 +45,24 @@ The slug stays `wp2static-addon-advanced-crawling`: it keys the row in the
 add-ons table and the name of the options table on installations that already
 have it.
 
+## Verified
+
+Against a real export, and this one needed no account. A page carrying five
+references was published with two extra hosts configured, and the output
+checked:
+
+| In the page | In the published copy |
+|---|---|
+| `https://cdn.example/img.png` | rewritten |
+| `http://cdn.example/img.png` | rewritten |
+| `//cdn.example/style.css` | rewritten |
+| `https://elsewhere.example/x` | left alone |
+
+The `https` row is the one that matters: upstream built its pattern as
+`'https:// ' . $host`, with a space in it, so on any site served over TLS the
+add-on did nothing at all and said nothing about it. No occurrence of either
+configured host was left anywhere in the output.
+
 ## Requirements
 
 VibeStatic 9.0 or later, PHP 8.2, WordPress 6.5. No runtime dependencies.
