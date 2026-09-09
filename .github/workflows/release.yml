@@ -7,6 +7,13 @@ name: release
 # add-on asks for updates — matches releases by exactly this prefix. The two
 # have to agree, and they are checked against each other below.
 
+# **Push tags one at a time.** GitHub creates no push event at all when more
+# than three tags arrive together, so `git push --tags` with ten of them
+# publishes nothing and reports nothing — the tags are on the remote, the
+# releases are not. That happened with the first ten; the recovery is
+# `gh workflow run release.yml -f tag=<add-on>-v1.0.0` per add-on, which is what
+# the workflow_dispatch below is for.
+
 on:
   push:
     tags:

@@ -101,6 +101,14 @@ git push origin bunnycdn-v1.0.1
 header, runs the suite, builds the zip and publishes it. A prerelease tag
 (`-rc1`, `-beta`) is not offered to production sites.
 
+**One tag at a time.** GitHub creates no push event when more than three tags
+arrive together, so `git push --tags` with several of them publishes nothing and
+says nothing about it. For a batch, dispatch them instead:
+
+```bash
+gh workflow run release.yml -f tag=bunnycdn-v1.0.0
+```
+
 To build one by hand:
 
 ```bash
