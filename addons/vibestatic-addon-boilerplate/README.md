@@ -51,7 +51,9 @@ one does not have:
 
 ## Requirements
 
-VibeStatic 8.1 or later, PHP 8.2, WordPress 6.5.
+VibeStatic 9.0 or later, PHP 8.2, WordPress 6.5.
+
+9.0 because the base this add-on extends, `WP2Static\Addon\`, arrived in it. On an older core the add-on does not register and says why, rather than failing during `plugins_loaded`.
 
 ## Development
 
