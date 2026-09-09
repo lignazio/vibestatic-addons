@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="PHP compatibility">
+  <description>PHP 8.2 and up, which is what the core requires.</description>
+
+  <file>src</file>
+  <file>autoload.php</file>
+  <file>uninstall.php</file>
+  <file>vibestatic-addon-boilerplate.php</file>
+
+  <exclude-pattern>*/vendor/*</exclude-pattern>
+  <exclude-pattern>*/tests/*</exclude-pattern>
+
+  <arg name="extensions" value="php"/>
+  <arg value="p"/>
+
+  <config name="testVersion" value="8.2-"/>
+
+  <rule ref="PHPCompatibilityWP"/>
+</ruleset>

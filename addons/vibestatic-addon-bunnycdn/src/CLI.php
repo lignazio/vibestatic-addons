@@ -1,0 +1,21 @@
+<?php
+/**
+ * `wp vibestatic bunnycdn options get|set|list`
+ *
+ * @package WP2StaticBunnyCDN
+ */
+
+namespace WP2StaticBunnyCDN;
+
+class CLI {
+
+    /**
+     * @param string[] $args       Positional arguments.
+     * @param string[] $assoc_args Flags. Unused; WP-CLI passes them regardless.
+     */
+    public static function command( array $args, array $assoc_args = [] ) : void {
+        unset( $assoc_args );
+
+        OptionsCommand::run( Controller::instance()->options(), $args );
+    }
+}
