@@ -18,6 +18,10 @@
     <testsuites>
         <testsuite name="unit">
             <directory>addons/*/tests/unit</directory>
+            <directory>tests/unit</directory>
+        </testsuite>
+        <testsuite name="guard">
+            <directory>tests/unit</directory>
         </testsuite>
         <testsuite name="advanced-crawling">
             <directory>addons/vibestatic-addon-advanced-crawling/tests/unit</directory>

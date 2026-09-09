@@ -20,6 +20,7 @@ parameters:
             # errors came from, in code that was correct. `php -l`, phpcs and
             # actually running it still cover them.
             - tests/functions.php
+            - tests/plugin-functions.php
             - verify.php
             - addons/*/tests/*
             # Declarations for the analysis, never loaded at run time.
