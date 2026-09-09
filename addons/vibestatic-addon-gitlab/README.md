@@ -3,6 +3,15 @@
 Commits the generated site to a GitLab project — one commit per deploy, through
 the commits API.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+Written to GitLab's documented commits and repository-tree APIs; **no request
+has been made against a real project**.
+
 ## Configuration
 
 | Setting | Notes |
@@ -33,11 +42,6 @@ the same batch with it.
 against any current version of the core**: `WP2Static_SitePublisher`,
 `$_POST['ajax_action']`, a crc32 hash file in the uploads directory, no
 namespace, no tests, no CI, no capability checks.
-
-## Not verified
-
-Written to GitLab's documented commits and repository-tree APIs; **no request
-has been made against a real project**.
 
 ## Requirements
 

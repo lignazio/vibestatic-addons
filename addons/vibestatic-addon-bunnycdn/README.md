@@ -3,6 +3,16 @@
 Uploads the generated site to a BunnyCDN Edge Storage zone, removes what has
 left the site, and purges the pull zone.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+The endpoints here are written to BunnyCDN's documented Edge Storage and pull
+zone APIs, but **no request has been made against a real account**. Check the
+first deploy against a throwaway zone.
+
 ## Configuration
 
 | Setting | Notes |
@@ -47,12 +57,6 @@ wp vibestatic bunnycdn options set bunnycdnStorageZoneName my-zone
 - The WP-CLI command was registered as a static callable while the method was
   declared non-static: on PHP 8 it was a fatal error the first time it ran.
 - Undeclared dynamic properties, deprecated as of PHP 8.2.
-
-## Not verified
-
-The endpoints here are written to BunnyCDN's documented Edge Storage and pull
-zone APIs, but **no request has been made against a real account**. Check the
-first deploy against a throwaway zone.
 
 ## Requirements
 

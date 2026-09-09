@@ -35,10 +35,11 @@ same thing as having watched it deploy.
 | `boilerplate` | Nothing to try: it sends nothing anywhere. |
 | `bunnycdn` `gcs` `azure` `github` `gitlab` `bitbucket` `cloudflare-workers` `algolia` | **No.** The requests are written to each service's documented API and the logic is covered by tests, but no deploy has been watched end to end. |
 
-An add-on in the last row says so on its own settings page, above the fields —
-the person about to paste production credentials into a form is the person who
-should be told. When one is verified, `fieldTested()` in its Controller becomes
-`true`, the notice goes, and `verify.php` insists the README agrees.
+An add-on in the last row says so twice: at the top of its own README, and on
+its settings page above the fields — the person about to paste production
+credentials into a form is the person who should be told. When one is verified,
+`fieldTested()` in its Controller becomes `true`, both notices go, and
+`verify.php` insists the README agrees.
 
 If you try one against a throwaway account, what is worth watching is the three
 things their ancestors got wrong: that a second deploy with nothing changed

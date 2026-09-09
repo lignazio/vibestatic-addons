@@ -3,6 +3,15 @@
 Uploads the generated site to an Azure Blob Storage container and removes from
 it what has left the site.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+Written to Azure's documented Blob REST API; **no request has been made against
+a real storage account**.
+
 ## Configuration
 
 | Setting | Notes |
@@ -36,11 +45,6 @@ ever a silent 403: a zero `Content-Length` signs as an empty line, and the
 version of the core**: `WP2Static_SitePublisher`, `$_POST['ajax_action']`, a
 sibling directory called `static-html-output-plugin`, no namespace, no tests,
 no CI, no capability checks.
-
-## Not verified
-
-Written to Azure's documented Blob REST API; **no request has been made against
-a real storage account**.
 
 ## Requirements
 

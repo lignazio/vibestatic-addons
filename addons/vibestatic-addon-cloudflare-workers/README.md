@@ -9,6 +9,15 @@ its content type — the layout a Workers Sites script reads.
 > arrangement. This add-on still targets KV, because that is what an existing
 > worker script expects. A new site is better served by Pages.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+Written to Cloudflare's documented Workers KV bulk endpoints; **no request has
+been made against a real account**.
+
 ## Configuration
 
 Account ID, KV namespace ID, and an API token with **Workers KV Storage: Edit**.
@@ -45,11 +54,6 @@ wp vibestatic cloudflare-workers options list
   between them left the namespace holding both.
 - A 1047-line MIME table; no deletion; `latte` templates where every other
   add-on used WordPress's.
-
-## Not verified
-
-Written to Cloudflare's documented Workers KV bulk endpoints; **no request has
-been made against a real account**.
 
 ## Requirements
 

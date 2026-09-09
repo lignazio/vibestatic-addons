@@ -3,6 +3,15 @@
 Commits the generated site to a Bitbucket repository — one commit per deploy,
 through the `src` endpoint.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+Written to Bitbucket Cloud's documented `src` endpoint; **no request has been
+made against a real repository**.
+
 ## Configuration
 
 | Setting | Notes |
@@ -32,11 +41,6 @@ goes through a state where the old path is gone and the new one has not arrived.
 version of the core**: `WP2Static_SitePublisher`, `$_POST['ajax_action']`, a
 crc32 hash file in the uploads directory, no namespace, no tests, no CI, no
 capability checks. Its plugin header described it as "AWS Bitbucket".
-
-## Not verified
-
-Written to Bitbucket Cloud's documented `src` endpoint; **no request has been
-made against a real repository**.
 
 ## Requirements
 

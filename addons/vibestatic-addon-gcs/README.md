@@ -3,6 +3,16 @@
 Uploads the generated site to a GCS bucket and removes from it what has left the
 site.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+The token exchange and the JSON API calls are written to Google's documented
+shapes and the JWT signing is covered by tests, but **no request has been made
+against a real bucket**.
+
 ## Configuration
 
 Paste the **service account key file whole** into the settings page. It needs
@@ -33,12 +43,6 @@ commit from December 2024; it is on an unmerged Dependabot branch.)
   or the deploy runs as a different user.
 - Files were read into memory whole; four queries interpolated the table name;
   the settings form had no capability check.
-
-## Not verified
-
-The token exchange and the JSON API calls are written to Google's documented
-shapes and the JWT signing is covered by tests, but **no request has been made
-against a real bucket**.
 
 ## Requirements
 

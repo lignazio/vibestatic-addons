@@ -3,6 +3,15 @@
 Commits the generated site to a GitHub repository — one commit per deploy,
 through the Git Data API.
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+Written to GitHub's documented Git Data API; **no request has been made against
+a real repository**.
+
 ## Configuration
 
 | Setting | Notes |
@@ -47,11 +56,6 @@ WP2Static 7 removed, expects the plugin to sit next to a directory called
 - The repository also contained `S3Deployer.php`, 418 lines of deployer for a
   different service, and its main plugin file was named
   `wp2static-addon-s3.php`.
-
-## Not verified
-
-Written to GitHub's documented Git Data API; **no request has been made against
-a real repository**.
 
 ## Requirements
 

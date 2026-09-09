@@ -20,6 +20,15 @@ wp vibestatic algolia indices
 wp vibestatic algolia objects wp_searchable_posts
 ```
 
+## Not verified
+
+**This add-on has not been tested end to end against the real service.**
+Try it against a throwaway account before pointing it at a site that
+matters.
+
+The read-only client is written to Algolia's documented REST API; **no request
+has been made against a real application**.
+
 ## What this replaces
 
 `wp2static-addon-algolia`, June 2020.
@@ -48,11 +57,6 @@ wp vibestatic algolia objects wp_searchable_posts
 - `$hit['post_author']['user_url']` read unguarded: one record indexed without
   an author killed the whole listing.
 - Two functions declared in the global namespace.
-
-## Not verified
-
-The read-only client is written to Algolia's documented REST API; **no request
-has been made against a real application**.
 
 ## Requirements
 
