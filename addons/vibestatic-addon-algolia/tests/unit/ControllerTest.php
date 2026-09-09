@@ -7,6 +7,7 @@ namespace WP2StaticAlgolia\Tests;
 
 use PHPUnit\Framework\TestCase;
 use WP2StaticAlgolia\Controller;
+use VibeStatic\Tests\FakeWpdb;
 
 class ControllerTest extends TestCase {
 

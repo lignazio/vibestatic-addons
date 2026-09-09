@@ -13,6 +13,8 @@
 
 namespace WP2StaticAlgolia;
 
+use WP2Static\Addon\OptionsCommand;
+
 use WP_CLI;
 
 class CLI {

@@ -2,7 +2,7 @@
 /**
  * Boots every VibeStatic add-on against a stubbed WordPress and a stubbed core.
  *
- *     php addons/verify.php
+ *     php verify.php
  *
  * It answers the question the per-add-on test suites cannot, because each of
  * them only ever loads its own add-on: does every one of them still *wire up*?
@@ -35,52 +35,89 @@ $GLOBALS['options_store'] = [];
 
 class FakeWpdb {
     public $prefix = 'wp_';
-    public function get_charset_collate() { return 'DEFAULT CHARACTER SET utf8mb4'; }
+    public function get_charset_collate() {
+ return 'DEFAULT CHARACTER SET utf8mb4'; }
     public function prepare( $sql, ...$args ) {
         foreach ( $args as $a ) {
-            $sql = preg_replace( '/%[isd]/', is_string($a) ? "'" . addslashes((string)$a) . "'" : (string)$a, $sql, 1 );
+            $sql = preg_replace( '/%[isd]/', is_string( $a ) ? "'" . addslashes( (string) $a ) . "'" : (string) $a, $sql, 1 );
         }
         return $sql;
     }
-    public function query( $sql ) { $GLOBALS['queries'][] = $sql; return 1; }
-    public function get_results( $sql ) { $GLOBALS['queries'][] = $sql; return []; }
-    public function get_var( $sql ) { $GLOBALS['queries'][] = $sql; return null; }
+    public function query( $sql ) {
+ $GLOBALS['queries'][] = $sql;
+return 1; }
+    public function get_results( $sql ) {
+ $GLOBALS['queries'][] = $sql;
+return []; }
+    public function get_var( $sql ) {
+ $GLOBALS['queries'][] = $sql;
+return null; }
 }
 $wpdb = new FakeWpdb();
 
-function add_action( $h, $c, $p = 10, $a = 1 ) { $GLOBALS['hooks'][$h][] = $c; }
-function add_filter( $h, $c, $p = 10, $a = 1 ) { $GLOBALS['hooks'][$h][] = $c; }
-function do_action( $h, ...$a ) { $GLOBALS['fired'][$h][] = $a; }
-function apply_filters( $h, $v, ...$a ) { return $v; }
-function __( $t, $d = '' ) { return $t; }
-function esc_html__( $t, $d = '' ) { return $t; }
-function esc_html_e( $t, $d = '' ) { echo $t; }
-function esc_html( $t ) { return htmlspecialchars( (string) $t, ENT_QUOTES ); }
-function esc_attr( $t ) { return htmlspecialchars( (string) $t, ENT_QUOTES ); }
-function esc_url( $t ) { return $t; }
-function esc_textarea( $t ) { return htmlspecialchars( (string) $t, ENT_QUOTES ); }
-function checked( $a, $b, $e = true ) { return (string)$a === (string)$b ? ' checked="checked"' : ''; }
-function admin_url( $p = '' ) { return 'https://example.com/wp-admin/' . $p; }
-function wp_nonce_field( $a ) { echo '<input type="hidden" name="_wpnonce" value="x" />'; }
-function wp_unslash( $v ) { return $v; }
-function sanitize_text_field( $v ) { return ( is_array($v)||is_object($v) ) ? '' : trim( strip_tags( (string) $v ) ); }
-function sanitize_textarea_field( $v ) { return ( is_array($v)||is_object($v) ) ? '' : strip_tags( (string) $v ); }
+function add_action( $h, $c, $p = 10, $a = 1 ) {
+ $GLOBALS['hooks'][ $h ][] = $c; }
+function add_filter( $h, $c, $p = 10, $a = 1 ) {
+ $GLOBALS['hooks'][ $h ][] = $c; }
+function do_action( $h, ...$a ) {
+ $GLOBALS['fired'][ $h ][] = $a; }
+function apply_filters( $h, $v, ...$a ) {
+ return $v; }
+function __( $t, $d = '' ) {
+ return $t; }
+function esc_html__( $t, $d = '' ) {
+ return $t; }
+function esc_html_e( $t, $d = '' ) {
+ echo $t; }
+function esc_html( $t ) {
+ return htmlspecialchars( (string) $t, ENT_QUOTES ); }
+function esc_attr( $t ) {
+ return htmlspecialchars( (string) $t, ENT_QUOTES ); }
+function esc_url( $t ) {
+ return $t; }
+function esc_textarea( $t ) {
+ return htmlspecialchars( (string) $t, ENT_QUOTES ); }
+function checked( $a, $b, $e = true ) {
+ return (string) $a === (string) $b ? ' checked="checked"' : ''; }
+function admin_url( $p = '' ) {
+ return 'https://example.com/wp-admin/' . $p; }
+function wp_nonce_field( $a ) {
+ echo '<input type="hidden" name="_wpnonce" value="x" />'; }
+function wp_unslash( $v ) {
+ return $v; }
+function sanitize_text_field( $v ) {
+ return ( is_array( $v ) || is_object( $v ) ) ? '' : trim( strip_tags( (string) $v ) ); }
+function sanitize_textarea_field( $v ) {
+ return ( is_array( $v ) || is_object( $v ) ) ? '' : strip_tags( (string) $v ); }
 function wp_safe_redirect( $u ) { }
-function wp_json_encode( $v, $f = 0 ) { return json_encode( $v, $f ); }
-function current_user_can( $c ) { return true; }
-function is_multisite() { return false; }
-function get_sites( $a = [] ) { return []; }
+function wp_json_encode( $v, $f = 0 ) {
+ return json_encode( $v, $f ); }
+function current_user_can( $c ) {
+ return true; }
+function is_multisite() {
+ return false; }
+function get_sites( $a = [] ) {
+ return []; }
 function switch_to_blog( $i ) {}
 function restore_current_blog() {}
-function untrailingslashit( $s ) { return rtrim( (string) $s, '/' ); }
-function get_option( $n, $d = '' ) { return $GLOBALS['options_store'][$n] ?? $d; }
-function get_transient( $k ) { return false; }
-function set_transient( $k, $v, $t ) { return true; }
-function dbDelta( $sql ) { $GLOBALS['queries'][] = $sql; return []; }
-function plugin_dir_path( $f ) { return dirname( $f ) . '/'; }
+function untrailingslashit( $s ) {
+ return rtrim( (string) $s, '/' ); }
+function get_option( $n, $d = '' ) {
+ return $GLOBALS['options_store'][ $n ] ?? $d; }
+function get_transient( $k ) {
+ return false; }
+function set_transient( $k, $v, $t ) {
+ return true; }
+function dbDelta( $sql ) {
+ $GLOBALS['queries'][] = $sql;
+return []; }
+function plugin_dir_path( $f ) {
+ return dirname( $f ) . '/'; }
 function register_activation_hook( $f, $c ) {}
-function wp_doing_cron() { return false; }
-function is_admin() { return true; }
+function wp_doing_cron() {
+ return false; }
+function is_admin() {
+ return true; }
 
 }
 
@@ -88,37 +125,58 @@ function is_admin() { return true; }
 namespace WP2Static {
     class WsLog {
         public static $lines = [];
-        public static function l( string $t ) : void { self::$lines[] = $t; }
+        public static function l( string $t ) : void {
+ self::$lines[] = $t; }
     }
     class CoreOptions {
         public static function encrypt_decrypt( $action, $value ) {
             return 'encrypt' === $action ? 'ENC:' . $value : ( 0 === strpos( (string) $value, 'ENC:' ) ? substr( (string) $value, 4 ) : $value );
         }
-        public static function getValue( $name ) { return $GLOBALS['core_options'][$name] ?? ''; }
+        public static function getValue( $name ) {
+ return $GLOBALS['core_options'][ $name ] ?? ''; }
     }
     class Controller {
         public static $authorized = [];
-        public static function authorize( string $nonce ) : void { self::$authorized[] = $nonce; }
+        public static function authorize( string $nonce ) : void {
+ self::$authorized[] = $nonce; }
     }
     class SiteInfo {
-        public static function getURL( $n ) { return 'https://wp.example.com:8080/'; }
+        public static function getURL( $n ) {
+ return 'https://wp.example.com:8080/'; }
     }
     class DeployPlan {
-        private $d; private $x; private $u;
-        public function __construct( array $d, array $x, int $u ) { $this->d = $d; $this->x = $x; $this->u = $u; }
-        public function toDeploy() : array { return $this->d; }
-        public function toDelete() : array { return $this->x; }
-        public function unchanged() : int { return $this->u; }
-        public function isEmpty() : bool { return ! $this->d && ! $this->x; }
-        public function summary() : string { return sprintf( '%d to deploy, %d to delete, %d unchanged', count($this->d), count($this->x), $this->u ); }
+        private $d;
+private $x;
+private $u;
+        public function __construct( array $d, array $x, int $u ) {
+ $this->d = $d;
+$this->x = $x;
+$this->u = $u; }
+        public function toDeploy() : array {
+ return $this->d; }
+        public function toDelete() : array {
+ return $this->x; }
+        public function unchanged() : int {
+ return $this->u; }
+        public function isEmpty() : bool {
+ return ! $this->d && ! $this->x; }
+        public function summary() : string {
+ return sprintf( '%d to deploy, %d to delete, %d unchanged', count( $this->d ), count( $this->x ), $this->u ); }
     }
     class DeployCache {
-        public static $added = []; public static $removed = [];
+        public static $added = [];
+public static $removed = [];
         public static $plan = null;
-        public static function plan( $ns = 'default', $paths = null ) { return self::$plan ?: new DeployPlan( [], [], 0 ); }
-        public static function addFile( $p, $ns = 'default', $h = null ) : void { self::$added[] = [ $p, $ns ]; }
-        public static function rmPaths( array $p, $ns = 'default' ) : void { foreach ($p as $x) self::$removed[] = [ $x, $ns ]; }
-        public static function fileisCached( $p, $ns = 'default', $h = null ) { return false; }
+        public static function plan( $ns = 'default', $paths = null ) {
+ return self::$plan ?: new DeployPlan( [], [], 0 ); }
+        public static function addFile( $p, $ns = 'default', $h = null ) : void {
+ self::$added[] = [ $p, $ns ]; }
+        public static function rmPaths( array $p, $ns = 'default' ) : void {
+ foreach ( $p as $x ) {
+self::$removed[] = [ $x, $ns ];
+        } }
+        public static function fileisCached( $p, $ns = 'default', $h = null ) {
+ return false; }
     }
     class URLHelper {
         public static function getProtocolRelativeURL( string $url ) : string {
@@ -132,16 +190,23 @@ namespace WP2Static {
         abstract protected function put( string $l, string $d ) : bool;
         abstract protected function delete( string $d ) : bool;
         abstract protected function removeDirectory( string $d ) : bool;
-        protected function root() : string { return ''; }
-        protected function connect() : bool { return true; }
+        protected function root() : string {
+ return ''; }
+        protected function connect() : bool {
+ return true; }
         protected function disconnect() : void {}
         final public function deploy( string $path ) : void {
-            if ( ! is_dir( $path ) ) { WsLog::l( 'no dir' ); return; }
-            if ( ! $this->connect() ) { return; }
+            if ( ! is_dir( $path ) ) {
+WsLog::l( 'no dir' );
+return; }
+            if ( ! $this->connect() ) {
+return; }
             $plan = DeployCache::plan( $this->deployCacheNamespace() );
             WsLog::l( $plan->summary() );
-            foreach ( $plan->toDeploy() as $p ) { $this->put( $path . $p, $this->root() . $p ); }
-            foreach ( $plan->toDelete() as $p ) { $this->delete( $this->root() . $p ); }
+            foreach ( $plan->toDeploy() as $p ) {
+$this->put( $path . $p, $this->root() . $p ); }
+            foreach ( $plan->toDelete() as $p ) {
+$this->delete( $this->root() . $p ); }
             $this->disconnect();
         }
     }
@@ -150,18 +215,23 @@ namespace WP2Static {
 namespace WP2Static\Vendor\GuzzleHttp {
     class Client {
         public $calls = [];
-        public function __construct( array $config = [] ) { $this->config = $config; }
+        public function __construct( array $config = [] ) {
+ $this->config = $config; }
         public function request( $method, $uri, array $options = [] ) {
             $this->calls[] = [ $method, $uri, $options ];
             return new \WP2Static\Vendor\GuzzleHttp\FakeResponse();
         }
     }
     class FakeResponse {
-        public function getStatusCode() { return 200; }
-        public function getBody() { return '{"success":true,"sha":"abc","id":"x","object":{"sha":"abc"},"items":[]}'; }
-        public function getHeaderLine( $n ) { return ''; }
+        public function getStatusCode() {
+ return 200; }
+        public function getBody() {
+ return '{"success":true,"sha":"abc","id":"x","object":{"sha":"abc"},"items":[]}'; }
+        public function getHeaderLine( $n ) {
+ return ''; }
     }
 }
+
 namespace WP2Static\Vendor\GuzzleHttp\Exception {
     interface GuzzleException {}
     class RequestException extends \RuntimeException implements GuzzleException {}
@@ -170,7 +240,27 @@ namespace WP2Static\Vendor\GuzzleHttp\Exception {
 // ------------------------------------------------------------------- run
 namespace {
 
-$root = __DIR__;
+$root = __DIR__ . '/addons';
+
+/*
+ * The base classes are the core's, so they are loaded from the core, not
+ * stubbed. Everything above this line stands in for a WordPress and for the
+ * rest of WP2Static; WP2Static\Addon\ is real, because "does every add-on
+ * still wire up" is a question about the actual base and not about a copy of
+ * it. Composer's autoloader is not used: this script runs against stubs it
+ * declared itself, and loading the core's map here would pull the real
+ * WP2Static\Controller in over the stub.
+ */
+foreach ( [ 'Options', 'SettingsPage', 'OptionsCommand', 'Registry', 'Controller', 'Updater' ] as $base ) {
+    $file = __DIR__ . "/vendor/lignazio/vibestatic/src/Addon/$base.php";
+
+    if ( ! is_readable( $file ) ) {
+        fwrite( STDERR, "Manca $file. Lancia 'composer install'.\n" );
+        exit( 1 );
+    }
+
+    require_once $file;
+}
 $addons = [
     'boilerplate' => 'WP2StaticBoilerplate',
     'bunnycdn' => 'WP2StaticBunnyCDN',
@@ -229,8 +319,16 @@ foreach ( $addons as $key => $ns ) {
          * cannot be called in-process. What it does before that is checked at
          * the source: capability and nonce through the core's authorize(),
          * ahead of any write.
+         *
+         * The source is the core's now, not a copy inside each add-on — which
+         * makes this one check rather than ten, and means it is checking the
+         * code that actually runs. It is still worth doing here: the assertion
+         * is about every add-on's save path, and an add-on that stopped
+         * extending the base would quietly stop being covered by it.
          */
-        $source = file_get_contents( "$dir/src/AddonController.php" );
+        $source = file_get_contents(
+            __DIR__ . '/vendor/lignazio/vibestatic/src/Addon/Controller.php'
+        );
         $save = substr( $source, strpos( $source, 'function saveOptionsFromUI' ) );
         $save = substr( $save, 0, strpos( $save, 'exit;' ) );
 
@@ -269,8 +367,9 @@ foreach ( $addons as $key => $ns ) {
 
         printf( "  ok  %-20s slug=%-40s options=%d\n", $key, $slug, count( $names ) );
     } catch ( Throwable $e ) {
-        while ( ob_get_level() > 0 ) { ob_end_clean(); }
-        $failures++;
+        while ( ob_get_level() > 0 ) {
+ob_end_clean(); }
+        ++$failures;
         printf( "FAIL  %-20s %s: %s\n  at %s:%d\n", $key, get_class( $e ), $e->getMessage(), $e->getFile(), $e->getLine() );
     }
 }

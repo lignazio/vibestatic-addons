@@ -1,0 +1,103 @@
+name: release
+
+# On a tag, and the tag says which add-on: `bunnycdn-v1.0.1`, not `v1.0.1`.
+#
+# Ten plugins share this repository, so a bare `v*` tag would not say what was
+# being released, and WP2Static\Addon\Updater — which is what an installed
+# add-on asks for updates — matches releases by exactly this prefix. The two
+# have to agree, and they are checked against each other below.
+
+on:
+  push:
+    tags:
+      - '*-v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (e.g. bunnycdn-v1.0.1)'
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ github.event.inputs.tag || github.ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      # The tag is what people install. If it does not match the version in the
+      # plugin header, whoever downloads `bunnycdn-v1.0.1` gets a plugin that
+      # says 1.0.0, and the updater never offers the next update because the
+      # comparison starts from the header.
+      #
+      # The value goes through `env:` rather than being interpolated into the
+      # script: a `${{ }}` in the middle of bash is substituted BEFORE the shell
+      # starts, so its content becomes code rather than data.
+      - name: Tag names an add-on, and matches its version
+        env:
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          ADDON="${TAG%-v*}"
+          WANTED="${TAG##*-v}"
+
+          PLUGIN="addons/vibestatic-addon-$ADDON/vibestatic-addon-$ADDON.php"
+
+          if [ ! -f "$PLUGIN" ]; then
+            echo "Il tag $TAG nomina '$ADDON', che non e' un add-on di questo repository." >&2
+            exit 1
+          fi
+
+          VERSION="$(grep -m1 -E '^\s*\*\s*Version:' "$PLUGIN" \
+            | sed -E 's/.*Version:[[:space:]]*//' | tr -d '[:space:]')"
+
+          if [ "$WANTED" != "$VERSION" ]; then
+            echo "Il tag dice $WANTED ma $PLUGIN dichiara $VERSION." >&2
+            exit 1
+          fi
+
+          {
+            echo "addon=$ADDON"
+            echo "version=$VERSION"
+          } >> "$GITHUB_ENV"
+
+      # Before publishing, not after. A release is immutable for anyone who has
+      # already downloaded it.
+      - name: Test
+        run: composer run-script test
+
+      - name: Build the zip
+        run: tools/build_release.sh "$addon"
+
+      # `gh` is preinstalled on the runners: no third-party action to trust and
+      # keep pinned to a SHA.
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.event.inputs.tag || github.ref_name }}
+        run: |
+          # A prerelease is skipped by Addon\Updater, so it is not offered to a
+          # production site: the behaviour wanted for an -alpha, -beta or -rc.
+          case "$version" in
+            *-*) PRERELEASE=--prerelease ;;
+            *)   PRERELEASE= ;;
+          esac
+
+          gh release create "$TAG" \
+            "dist/vibestatic-addon-$addon-$version.zip" \
+            --title "VibeStatic add-on: $addon $version" \
+            --generate-notes \
+            $PRERELEASE

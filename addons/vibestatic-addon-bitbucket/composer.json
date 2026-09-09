@@ -1,7 +1,7 @@
 {
     "name": "lignazio/vibestatic-addon-bitbucket",
     "description": "Bitbucket deployment add-on for VibeStatic.",
-    "homepage": "https://github.com/lignazio/vibestatic-addon-bitbucket",
+    "homepage": "https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-bitbucket",
     "license": "GPL-2.0-or-later",
     "authors": [
         {
@@ -17,70 +17,15 @@
     ],
     "type": "wordpress-plugin",
     "support": {
-        "issues": "https://github.com/lignazio/vibestatic-addon-bitbucket/issues",
-        "source": "https://github.com/lignazio/vibestatic-addon-bitbucket"
+        "issues": "https://github.com/lignazio/vibestatic-addons/issues",
+        "source": "https://github.com/lignazio/vibestatic-addons"
     },
     "require": {
         "php": ">=8.2"
-    },
-    "require-dev": {
-        "10up/wp_mock": "^1.1",
-        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
-        "php-parallel-lint/php-parallel-lint": "^1.4",
-        "php-stubs/wordpress-stubs": "^7.1",
-        "php-stubs/wp-cli-stubs": "^2.12",
-        "phpcompatibility/phpcompatibility-wp": "^2.1",
-        "phpstan/phpstan": "^2.1",
-        "phpunit/phpunit": "^9.6",
-        "squizlabs/php_codesniffer": "^3.13",
-        "szepeviktor/phpstan-wordpress": "^2.0",
-        "thecodingmachine/phpstan-strict-rules": "^2.0",
-        "wp-coding-standards/wpcs": "^3.4"
     },
     "autoload": {
         "psr-4": {
             "WP2StaticBitbucket\\": "src/"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "WP2StaticBitbucket\\Tests\\": "tests/unit/"
-        }
-    },
-    "config": {
-        "platform": {
-            "php": "8.2"
-        },
-        "preferred-install": {
-            "*": "dist"
-        },
-        "sort-packages": true,
-        "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
-        }
-    },
-    "scripts": {
-        "lint": "parallel-lint --exclude vendor .",
-        "phpcs": "phpcs -s",
-        "phpcs-security": "phpcs -s --sniffs=WordPress.DB.PreparedSQL,WordPress.DB.PreparedSQLPlaceholders,WordPress.Security.EscapeOutput,WordPress.Security.NonceVerification,WordPress.Security.ValidatedSanitizedInput",
-        "phpcs-i18n": "phpcs -s --sniffs=WordPress.WP.I18n",
-        "phpcbf": "phpcbf",
-        "phpcompat": "phpcs -p --standard=./.phpcompat.xml.dist",
-        "phpstan": "@php -d memory_limit=-1 ./vendor/bin/phpstan analyse",
-        "phpunit": "phpunit",
-        "test": [
-            "composer validate --strict",
-            "@lint",
-            "@phpcompat",
-            "@phpstan",
-            "@phpunit",
-            "@phpcs-security",
-            "@phpcs-i18n"
-        ]
-    },
-    "scripts-descriptions": {
-        "phpcs-security": "The five security sniffs only - prepared SQL, nonces, escaping, sanitised input. At zero, and it stays there.",
-        "phpcs-i18n": "The internationalisation sniff only. At zero: a string left unwrapped does not show until somebody installs a translation, that is, never during development in English.",
-        "test": "Everything CI blocks on."
     }
 }

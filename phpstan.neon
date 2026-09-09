@@ -1,0 +1,73 @@
+parameters:
+    level: max
+    phpVersion: 80200
+    # The shipped code, which is what a user installs. Not the test suites:
+    # the core's configuration draws the line in the same place, and for the
+    # same reason — a test double is deliberately loose about types, and the
+    # useful thing to say about one is whether it passes, which phpunit says.
+    paths:
+        - addons
+    excludePaths:
+        analyse:
+            - addons/*/vendor/*
+            # These two declare WordPress functions so that they can run:
+            # tests/functions.php for the suite, verify.php because it is a
+            # standalone script that boots the add-ons against a WordPress it
+            # stubs itself. Analysed, either one gives PHPStan a second
+            # declaration of __() beside the one in the WordPress stubs, and the
+            # return type of both collapses to mixed — which is where five
+            # hundred and eighty-eight "should return string but returns mixed"
+            # errors came from, in code that was correct. `php -l`, phpcs and
+            # actually running it still cover them.
+            - tests/functions.php
+            - verify.php
+            - addons/*/tests/*
+            # Declarations for the analysis, never loaded at run time.
+            - tests/phpstan/*
+    # No wordpress-stubs.php here. szepeviktor/phpstan-wordpress, included
+    # below, already registers those stubs as a bootstrap file: naming them
+    # again gives PHPStan two declarations of every WordPress function, and the
+    # return type of both collapses to mixed. That produced five hundred and
+    # eighty-eight errors of the form "should return string but returns mixed"
+    # in code that was correct — and all ten add-ons shipped the duplicate,
+    # because none of them had ever run PHPStan: their composer.json could not
+    # be installed. The core's configuration does not have it.
+    scanFiles:
+        # The core's prefixed Guzzle. See the file for why it is worth having.
+        - tests/phpstan/guzzle.php
+
+    # WP-CLI itself, not stubs of it.
+    #
+    # The ten declared php-stubs/wp-cli-stubs ^2.12 alongside
+    # php-stubs/wordpress-stubs ^7.1, and those two cannot be installed
+    # together: wp-cli-stubs pins the WordPress stubs to ^6. Every one of the
+    # ten carried the pair, and nobody found out, because none of them had ever
+    # been through `composer install` — the repositories were never created, so
+    # their CI never ran once.
+    #
+    # The real package brings the real classes rather than a copy of their
+    # shapes, which is also what replaces the 5169-line wp-cli-stubs-2.2.0.php
+    # that used to be committed into five of these repositories.
+    scanDirectories:
+        - vendor/wp-cli/wp-cli/php
+
+    # **No ignoreErrors, and that is the point.**
+    #
+    # The ten add-ons each carried three: two saying "WP2Static\ classes cannot
+    # be found, that is fine" and one for WP_CLI::add_command's callable. They
+    # were there because the core is a runtime dependency in production —
+    # installed alongside, not required — so nothing could resolve it.
+    #
+    # Here the core is a dev dependency and wp-cli/wp-cli is scanned, so every
+    # call an add-on makes into WP2Static\ is checked against the real core,
+    # and a change to it that breaks an add-on fails here rather than on
+    # somebody's site. All three exemptions turned out to be unmatched.
+    #
+    # Upstream's answer to the same problem was a 5169-line copy of
+    # wp-cli-stubs-2.2.0.php committed into five of these repositories.
+
+    treatPhpDocTypesAsCertain: false
+
+includes:
+    - vendor/szepeviktor/phpstan-wordpress/extension.neon
+    - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon

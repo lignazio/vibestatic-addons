@@ -6,8 +6,9 @@
 namespace WP2StaticAdvancedCrawling\Tests;
 
 use PHPUnit\Framework\TestCase;
-use WP2StaticAdvancedCrawling\Options;
+use WP2Static\Addon\Options;
 use WP2StaticAdvancedCrawling\Rewriter;
+use VibeStatic\Tests\FakeWpdb;
 
 class RewriterTest extends TestCase {
 

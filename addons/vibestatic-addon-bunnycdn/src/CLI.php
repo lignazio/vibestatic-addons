@@ -7,6 +7,8 @@
 
 namespace WP2StaticBunnyCDN;
 
+use WP2Static\Addon\OptionsCommand;
+
 class CLI {
 
     /**

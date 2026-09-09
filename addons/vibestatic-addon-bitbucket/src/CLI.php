@@ -12,6 +12,8 @@
 
 namespace WP2StaticBitbucket;
 
+use WP2Static\Addon\OptionsCommand;
+
 class CLI {
 
     /**

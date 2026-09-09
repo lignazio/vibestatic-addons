@@ -30,6 +30,8 @@
 
 namespace WP2StaticCloudflareWorkers;
 
+use WP2Static\Addon\Options;
+
 use WP2Static\DeployCache;
 use WP2Static\Vendor\GuzzleHttp\Client;
 use WP2Static\Vendor\GuzzleHttp\Exception\GuzzleException;

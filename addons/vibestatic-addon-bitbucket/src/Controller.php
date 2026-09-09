@@ -7,7 +7,9 @@
 
 namespace WP2StaticBitbucket;
 
-class Controller extends AddonController {
+use WP2Static\Addon\Options;
+
+class Controller extends \WP2Static\Addon\Controller {
 
     /**
      * @var Options|null
@@ -30,7 +32,7 @@ class Controller extends AddonController {
     }
 
     public function docsUrl() : string {
-        return 'https://github.com/lignazio/vibestatic-addon-bitbucket';
+        return 'https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-bitbucket';
     }
 
     public function options() : Options {

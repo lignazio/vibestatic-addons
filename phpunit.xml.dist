@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  One suite per add-on, and a `unit` suite that is all of them.
+
+  Per add-on because that is the question asked while working on one:
+  `composer phpunit` with a testsuite name. All of them together because that
+  is the question CI asks, and because the add-ons share a base in the core now:
+  a change there has to be seen by all ten at once.
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         cacheResultFile=".phpunit.cache/result.cache"
+         failOnWarning="true"
+         failOnRisky="true"
+         beStrictAboutOutputDuringTests="true">
+    <testsuites>
+        <testsuite name="unit">
+            <directory>addons/*/tests/unit</directory>
+        </testsuite>
+        <testsuite name="advanced-crawling">
+            <directory>addons/vibestatic-addon-advanced-crawling/tests/unit</directory>
+        </testsuite>
+        <testsuite name="algolia">
+            <directory>addons/vibestatic-addon-algolia/tests/unit</directory>
+        </testsuite>
+        <testsuite name="azure">
+            <directory>addons/vibestatic-addon-azure/tests/unit</directory>
+        </testsuite>
+        <testsuite name="bitbucket">
+            <directory>addons/vibestatic-addon-bitbucket/tests/unit</directory>
+        </testsuite>
+        <testsuite name="boilerplate">
+            <directory>addons/vibestatic-addon-boilerplate/tests/unit</directory>
+        </testsuite>
+        <testsuite name="bunnycdn">
+            <directory>addons/vibestatic-addon-bunnycdn/tests/unit</directory>
+        </testsuite>
+        <testsuite name="cloudflare-workers">
+            <directory>addons/vibestatic-addon-cloudflare-workers/tests/unit</directory>
+        </testsuite>
+        <testsuite name="gcs">
+            <directory>addons/vibestatic-addon-gcs/tests/unit</directory>
+        </testsuite>
+        <testsuite name="github">
+            <directory>addons/vibestatic-addon-github/tests/unit</directory>
+        </testsuite>
+        <testsuite name="gitlab">
+            <directory>addons/vibestatic-addon-gitlab/tests/unit</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

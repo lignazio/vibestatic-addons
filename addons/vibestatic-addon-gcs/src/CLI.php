@@ -7,6 +7,8 @@
 
 namespace WP2StaticGCS;
 
+use WP2Static\Addon\OptionsCommand;
+
 class CLI {
 
     /**

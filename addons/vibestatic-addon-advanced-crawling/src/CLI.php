@@ -12,6 +12,8 @@
 
 namespace WP2StaticAdvancedCrawling;
 
+use WP2Static\Addon\OptionsCommand;
+
 class CLI {
 
     /**

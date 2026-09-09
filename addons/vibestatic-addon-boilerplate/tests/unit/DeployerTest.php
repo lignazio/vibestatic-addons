@@ -16,7 +16,8 @@ use WP2Static\DeployCache;
 use WP2Static\DeployPlan;
 use WP2Static\WsLog;
 use WP2StaticBoilerplate\Deployer;
-use WP2StaticBoilerplate\Options;
+use WP2Static\Addon\Options;
+use VibeStatic\Tests\FakeWpdb;
 
 class DeployerTest extends TestCase {
 

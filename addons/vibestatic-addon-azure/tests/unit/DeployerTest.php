@@ -12,7 +12,8 @@ use WP2Static\Vendor\GuzzleHttp\Client;
 use WP2Static\Vendor\GuzzleHttp\Response;
 use WP2StaticAzure\Deployer;
 use WP2StaticAzure\MimeTypes;
-use WP2StaticAzure\Options;
+use WP2Static\Addon\Options;
+use VibeStatic\Tests\FakeWpdb;
 
 class DeployerTest extends TestCase {
 

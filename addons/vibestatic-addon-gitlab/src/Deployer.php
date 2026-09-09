@@ -17,6 +17,8 @@
 
 namespace WP2StaticGitLab;
 
+use WP2Static\Addon\Options;
+
 use WP2Static\Vendor\GuzzleHttp\Client;
 use WP2Static\Vendor\GuzzleHttp\Exception\GuzzleException;
 use WP2Static\WsLog;

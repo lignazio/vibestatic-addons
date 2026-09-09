@@ -28,6 +28,8 @@
 
 namespace WP2StaticBoilerplate;
 
+use WP2Static\Addon\Options;
+
 use WP2Static\WsLog;
 
 class Deployer extends \WP2Static\PlanDrivenDeployer {

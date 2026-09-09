@@ -17,7 +17,9 @@
 
 namespace WP2StaticAlgolia;
 
-class Controller extends AddonController {
+use WP2Static\Addon\Options;
+
+class Controller extends \WP2Static\Addon\Controller {
 
     /**
      * The post types "WP Search with Algolia" builds an index for.
@@ -65,7 +67,7 @@ class Controller extends AddonController {
     }
 
     public function docsUrl() : string {
-        return 'https://github.com/lignazio/vibestatic-addon-algolia';
+        return 'https://github.com/lignazio/vibestatic-addons/tree/main/addons/vibestatic-addon-algolia';
     }
 
     public function options() : Options {

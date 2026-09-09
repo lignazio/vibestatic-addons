@@ -1,0 +1,114 @@
+name: quality
+
+# Everything, on every push, and deliberately not filtered by path.
+#
+# A monorepo invites `paths:` filters so that touching one add-on only tests
+# that add-on. Not here: all ten extend the same base in the core and share one
+# test harness, so the interesting failure is precisely the one that starts in
+# a shared file and shows up in an add-on nobody edited. The whole suite runs in
+# under a second; filtering would save nothing and hide that.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  static:
+    name: Static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Validate composer.json
+        run: composer validate --strict
+
+      # Blocking, and the reason this file exists. These are the sniffs the
+      # upstream configuration excluded — prepared SQL, nonces, escaping,
+      # sanitised input — which is to say exactly the ones that would have found
+      # every defect in the audit.
+      - name: Security (blocking)
+        run: composer run-script phpcs-security
+
+      # Non-blocking, and honestly so: the shipped add-on code is at zero on the
+      # full WordPress standard. What this still reports is the test harness —
+      # stub files that declare several classes in several namespaces in one
+      # place, which is what makes them stubs and what the standard forbids.
+      - name: Style and documentation (non-blocking)
+        continue-on-error: true
+        run: composer run-script phpcs
+
+      - name: i18n (blocking)
+        run: composer run-script phpcs-i18n
+
+      - name: PHP 8.2+ compatibility
+        run: composer run-script phpcompat
+
+      - name: PHPStan
+        run: composer run-script phpstan
+
+  tests:
+    name: Tests, PHP ${{ matrix.php }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+          tools: composer:v2
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v3
+
+      - name: Lint
+        run: composer run-script lint
+
+      - name: Test
+        run: composer run-script phpunit
+
+      # The question the per-add-on suites cannot answer, because each of them
+      # only loads its own add-on: does every one of them still wire up against
+      # the core's base?
+      - name: Every add-on boots
+        run: composer run-script verify
+
+  build:
+    name: Every add-on packages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # A zip that is only built when a tag is pushed is a zip nobody has seen
+      # until the moment it is published. Building all ten on every run costs
+      # seconds and means a broken build script is found before a release, not
+      # during one.
+      - name: Build all ten
+        run: |
+          for dir in addons/vibestatic-addon-*; do
+            tools/build_release.sh "${dir#addons/vibestatic-addon-}"
+          done

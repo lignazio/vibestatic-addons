@@ -11,7 +11,8 @@ use WP2Static\DeployPlan;
 use WP2Static\Vendor\GuzzleHttp\Client;
 use WP2Static\Vendor\GuzzleHttp\Response;
 use WP2StaticBunnyCDN\Deployer;
-use WP2StaticBunnyCDN\Options;
+use WP2Static\Addon\Options;
+use VibeStatic\Tests\FakeWpdb;
 
 class DeployerTest extends TestCase {
 

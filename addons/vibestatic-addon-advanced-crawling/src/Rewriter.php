@@ -19,6 +19,8 @@
 
 namespace WP2StaticAdvancedCrawling;
 
+use WP2Static\Addon\Options;
+
 use WP2Static\CoreOptions;
 use WP2Static\URLHelper;
 
