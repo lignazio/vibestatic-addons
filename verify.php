@@ -402,6 +402,22 @@ ob_end_clean(); }
     }
 }
 
+/*
+ * The ten `src/Updater.php` are generated from one template, and this is what
+ * makes that duplication safe rather than a repeat of the mistake the rewrite
+ * was undoing. Run here, not left to CI alone: whoever edits the template gets
+ * told by `composer test` that ten files are now out of step with it.
+ */
+$sync = escapeshellarg( __DIR__ . '/tools/sync_updater.php' );
+exec( PHP_BINARY . " $sync --check 2>&1", $sync_output, $sync_status );
+
+if ( 0 !== $sync_status ) {
+    ++$failures;
+    echo "FAIL  Updater generati:\n      " . implode( "\n      ", $sync_output ) . "\n";
+} else {
+    printf( "  ok  %-20s %s\n", 'sync_updater', trim( implode( ' ', $sync_output ) ) );
+}
+
 echo $failures ? "\n$failures add-on(s) failed.\n" : "\nAll add-ons booted.\n";
 exit( $failures ? 1 : 0 );
 }

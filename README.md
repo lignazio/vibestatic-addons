@@ -60,6 +60,16 @@ extends. What is left is what an add-on actually is: what it is called, which
 options it has, and what it does with them. Sixteen thousand nine hundred and
 eighteen lines became seven thousand one hundred and ninety-eight.
 
+One file came back out, at 1.1.0: `src/Updater.php`. A core installed from the
+wordpress.org directory cannot carry it — the directory forbids a plugin hosted
+there from serving updates for anything, this repository included — so an
+add-on that asked the core for its updates would quietly stop receiving them
+the day its user installed the core from WordPress instead of from GitHub. It
+is written once in `tools/updater-template.php`, generated into all ten by
+`tools/sync_updater.php`, and `verify.php` fails if any copy has drifted. That
+last part is the difference between this and what the rewrite was undoing:
+duplication a machine maintains, not duplication ten people edit.
+
 The rest follows from that. One test harness instead of ten identical copies of
 three hundred and sixty-four lines of stubs. One CI configuration. One release
 pipeline. One place to say what is verified and what is not.
@@ -86,12 +96,20 @@ php verify.php
 
 Boots all ten against a stubbed WordPress and the core's real base classes:
 every add-on wires up, every declared option has a field, every save authorises
-before it writes, no secret reaches the database in the clear.
+before it writes, no secret reaches the database in the clear, and the ten
+generated `src/Updater.php` still match the template they came from.
+
+```bash
+php tools/sync_updater.php
+```
+
+Rewrites those ten from `tools/updater-template.php`. Run it after editing the
+template; nothing else should ever edit the copies.
 
 ## Releasing one
 
-The tag names the add-on, because ten of them share this repository and
-`WP2Static\Addon\Updater` matches releases by that prefix:
+The tag names the add-on, because ten of them share this repository and each
+add-on's `Updater` matches releases by that prefix:
 
 ```bash
 git tag bunnycdn-v1.0.1

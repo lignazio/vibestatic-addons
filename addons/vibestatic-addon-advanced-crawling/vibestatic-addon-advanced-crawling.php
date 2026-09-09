@@ -109,8 +109,17 @@ add_action(
          * answers. The core's own Updater cannot: it asks for the repository's
          * latest release, which in a repository of ten plugins is somebody
          * else's.
+         *
+         * This add-on's own class, not `\WP2Static\Addon\Updater`, which is
+         * where it lived until 1.1.0. A core installed from the wordpress.org
+         * directory ships an inert shim at that name and nothing more — the
+         * directory forbids a plugin hosted there from serving updates for
+         * anything, this repository included — so an add-on that asked the core
+         * would simply stop updating the day its user installed the core from
+         * WordPress rather than from GitHub. `src/Updater.php` is generated from
+         * one template for all ten; see tools/sync_updater.php.
          */
-        \WP2Static\Addon\Updater::register( __FILE__, TAG_PREFIX, ADDON_NAME );
+        Updater::register( __FILE__, TAG_PREFIX, ADDON_NAME );
     },
     15
 );

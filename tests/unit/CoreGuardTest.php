@@ -59,7 +59,13 @@ class CoreGuardTest extends TestCase {
             . 'function __( $s, $d = "" ) { return $s; }' . "\n"
             . 'function register_activation_hook( $file, $callback ) { $GLOBALS["guard_activation"] = $callback; }' . "\n"
             . 'class Controller { public static function boot() { $GLOBALS["guard_booted"] = true; } '
-            . 'public static function activate( $n = null ) { $GLOBALS["guard_activated"] = true; } }' . "\n";
+            . 'public static function activate( $n = null ) { $GLOBALS["guard_activated"] = true; } }' . "\n"
+            // Since 1.1.0 the add-on registers with its *own* Updater — the one
+            // generated into its src/ — instead of the core's. In this harness
+            // the add-on's classes are not autoloaded at all, so it gets a stub
+            // like Controller has, and for the same reason: what is under test
+            // is the guard, not what boots behind it.
+            . 'class Updater { public static function register( $f, $p, $n ) { $GLOBALS["guard_registered"] = $p; } }' . "\n";
 
         $GLOBALS['guard_hooks'] = [];
         $GLOBALS['guard_booted'] = false;
@@ -109,14 +115,13 @@ class CoreGuardTest extends TestCase {
      * below the release it leads to.
      */
     public function testAReleaseCandidateOfTheRequiredCoreIsEnough() : void {
-        // Booting reaches Addon\Updater::register(), which asks WordPress for
-        // the plugin's Update URI header.
-        require_once __DIR__ . '/../plugin-functions.php';
-
         $result = $this->bootWith( '9.0.0-rc1', 'GuardRcCore' );
 
         $this->assertTrue( $result['booted'] );
         $this->assertSame( 0, $result['notices'] );
+
+        // And it asked to be kept up to date, with its own tag prefix.
+        $this->assertSame( 'boilerplate', $GLOBALS['guard_registered'] ?? null );
     }
 
     /**
